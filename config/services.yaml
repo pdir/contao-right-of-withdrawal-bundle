@@ -1,0 +1,29 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  Pdir\ContaoRightOfWithdrawalBundle\:
+    resource: ../src
+    exclude:
+      - ../src/ContaoManager
+      - ../src/DependencyInjection
+      - ../src/NotificationCenter
+      - ../src/PdirContaoRightOfWithdrawalBundle.php
+      - ../src/Declaration/Declaration.php
+      - ../src/Declaration/DeclarationInput.php
+      - ../src/Declaration/DeclarationType.php
+      - ../src/Declaration/Jurisdiction.php
+      - ../src/Declaration/SiteSettings.php
+
+  Pdir\ContaoRightOfWithdrawalBundle\Controller\:
+    resource: ../src/Controller
+    public: true
+
+  # Called through $GLOBALS['BE_MOD'] (see contao/config/config.php)
+  Pdir\ContaoRightOfWithdrawalBundle\Backend\DeclarationActions:
+    public: true
+
+  Pdir\ContaoRightOfWithdrawalBundle\Declaration\DeclarationSubmitter:
+    arguments:
+      $secret: '%kernel.secret%'

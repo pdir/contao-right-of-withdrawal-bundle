@@ -1,0 +1,18 @@
+{% trans_default_domain "pdir_withdrawal" %}
+{% autoescape false %}
+{{ 'mail.operator_intro'|trans({'%basis%': declaration.jurisdiction.legalBasis(declaration.type)}) }}
+
+{% include '@PdirContaoRightOfWithdrawal/mail/_content.txt.twig' %}
+{% if declaration.orderMatch == 'matched' %}
+
+{{ 'mail.order_matched'|trans({'%id%': declaration.orderId}) }}
+{% elseif declaration.orderMatch == 'email_mismatch' %}
+
+{{ 'mail.order_email_mismatch'|trans({'%id%': declaration.orderId}) }}
+{% elseif declaration.orderMatch == 'not_found' %}
+
+{{ 'mail.order_not_found'|trans }}
+{% endif %}
+
+{{ 'label.checksum'|trans }}: {{ declaration.hash }}
+{% endautoescape %}

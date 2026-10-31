@@ -1,0 +1,6 @@
+pdir_withdrawal_receipt:
+  path: /_withdrawal/receipt/{token}
+  controller: Pdir\ContaoRightOfWithdrawalBundle\Controller\ReceiptController
+  methods: [GET]
+  requirements:
+    token: '[a-f0-9]{64}'

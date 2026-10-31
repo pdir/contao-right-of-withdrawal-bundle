@@ -1,0 +1,83 @@
+{% extends "@Contao/content_element/_base.html.twig" %}
+{% trans_default_domain "pdir_withdrawal" %}
+
+{% set searchable = false %}
+
+{% macro field(name, label, value, errors, type = 'text', required = true, autocomplete = '', hint = '') %}
+    <div class="widget widget-{{ type }}{{ required ? ' mandatory' }}">
+        <label for="ctrl_{{ name }}">{{ label }}{% if not required %} ({{ 'form.optional'|trans({}, 'pdir_withdrawal') }}){% endif %}</label>
+        {% if errors[name] is defined %}<p class="error" id="error_{{ name }}">{{ errors[name] }}</p>{% endif %}
+        <input type="{{ type }}" id="ctrl_{{ name }}" name="{{ name }}" value="{{ value }}"{{ required ? ' required' }}{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}{% if hint %} placeholder="{{ hint }}"{% endif %}{% if errors[name] is defined %} aria-invalid="true" aria-describedby="error_{{ name }}"{% endif %}>
+    </div>
+{% endmacro %}
+
+{% block content %}
+    {% if is_backend|default(false) %}
+        <p>{{ entry_label }} → {{ confirm_label }}</p>
+    {% elseif declaration is defined %}
+        {% block receipt %}
+            <div class="withdrawal-receipt" role="status">
+                <h2>{{ 'receipt.heading'|trans({'%label%': declaration.type.declarationLabelKey|trans}) }}</h2>
+                <p>{{ 'receipt.received_at'|trans({'%date%': declaration.receivedAtFormatted}) }}</p>
+                <dl>
+                    <dt>{{ 'label.number'|trans }}</dt><dd>{{ declaration.sequenceNumber }}</dd>
+                    <dt>{{ 'label.name'|trans }}</dt><dd>{{ declaration.name }}</dd>
+                    <dt>{{ 'label.contract'|trans }}</dt><dd>{{ declaration.contract }}</dd>
+                    {% if declaration.contractPart %}<dt>{{ 'label.contract_part'|trans }}</dt><dd>{{ declaration.contractPart }}</dd>{% endif %}
+                    {% if declaration.cancellationType %}
+                        <dt>{{ 'label.cancellation_type'|trans }}</dt><dd>{{ ('value.' ~ declaration.cancellationType)|trans }}</dd>
+                        {% if declaration.cancellationReason %}<dt>{{ 'label.cancellation_reason'|trans }}</dt><dd>{{ declaration.cancellationReason }}</dd>{% endif %}
+                        <dt>{{ 'label.terminate_at'|trans }}</dt><dd>{{ declaration.terminationDate ?: 'value.earliest_date'|trans }}</dd>
+                    {% endif %}
+                    <dt>{{ 'label.email'|trans }}</dt><dd>{{ declaration.email }}</dd>
+                </dl>
+                {% if declaration.mailStatus == 'failed' %}
+                    <p class="error">{{ 'receipt.mail_failed'|trans }}</p>
+                {% else %}
+                    <p>{{ 'receipt.mail_sent'|trans({'%email%': declaration.email}) }}</p>
+                {% endif %}
+                <p><a href="{{ path('pdir_withdrawal_receipt', {token: receipt_token}) }}">{{ 'receipt.save'|trans }}</a></p>
+            </div>
+        {% endblock %}
+    {% elseif receipt_token is not defined and form_id is not defined %}
+        <p class="error">{{ 'receipt.unavailable'|trans }}</p>
+    {% else %}
+        {% block form %}
+            {% import _self as form %}
+            <form method="post" class="withdrawal-form withdrawal-form--{{ function }}">
+                <input type="hidden" name="FORM_SUBMIT" value="{{ form_id }}">
+                <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+
+                {% if errors.form is defined %}<p class="error" role="alert">{{ errors.form }}</p>{% endif %}
+
+                {{ form.field('name', 'label.name'|trans, input.name, errors, 'text', true, 'name') }}
+                {{ form.field('contract', ('form.contract_' ~ function)|trans, input.contract, errors) }}
+
+                {% if function == 'withdrawal' %}
+                    {{ form.field('contractPart', 'form.contract_part'|trans, input.contractPart, errors, 'text', false) }}
+                {% else %}
+                    <fieldset class="widget widget-radio mandatory">
+                        <legend>{{ 'form.cancellation_type'|trans }}</legend>
+                        {% if errors.cancellationType is defined %}<p class="error">{{ errors.cancellationType }}</p>{% endif %}
+                        <label><input type="radio" name="cancellationType" value="ordinary"{{ input.cancellationType != 'extraordinary' ? ' checked' }}> {{ 'value.ordinary'|trans }}</label>
+                        <label><input type="radio" name="cancellationType" value="extraordinary"{{ input.cancellationType == 'extraordinary' ? ' checked' }}> {{ 'value.extraordinary'|trans }}</label>
+                    </fieldset>
+                    {{ form.field('cancellationReason', 'form.cancellation_reason'|trans, input.cancellationReason, errors, 'text', false) }}
+                    {{ form.field('terminationDate', 'form.termination_date'|trans, input.terminationDate, errors, 'date', false) }}
+                {% endif %}
+
+                {{ form.field('email', 'form.email'|trans, input.email, errors, 'email', true, 'email') }}
+
+                {# Honeypot #}
+                <div hidden>
+                    <label for="ctrl_website">Website</label>
+                    <input type="text" id="ctrl_website" name="website" tabindex="-1" autocomplete="off">
+                </div>
+
+                <div class="widget widget-submit">
+                    <button type="submit" class="submit">{{ confirm_label }}</button>
+                </div>
+            </form>
+        {% endblock %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,10 @@
+{% trans_default_domain "pdir_withdrawal" %}
+{% autoescape false %}
+{{ 'mail.greeting'|trans({'%name%': declaration.name}) }}
+
+{{ 'mail.confirmation'|trans({'%basis%': declaration.jurisdiction.legalBasis(declaration.type)}) }}
+
+{% include '@PdirContaoRightOfWithdrawal/mail/_content.txt.twig' %}
+
+{{ 'mail.disclaimer'|trans }}
+{% endautoescape %}

@@ -1,0 +1,77 @@
+# Die Beschriftungen der Schaltflächen sind der Wortlaut von §§ 356a, 312k BGB und
+# § 13a FAGG und dürfen nicht geändert werden (siehe LegalLabelsTest).
+withdrawal:
+  entry: Vertrag widerrufen
+  confirm: Widerruf bestätigen
+  declaration: Widerruf
+cancellation:
+  entry: Verträge hier kündigen
+  confirm: jetzt kündigen
+  declaration: Kündigung
+
+label:
+  type: Art
+  number: Nummer
+  received: Eingang
+  name: Name
+  contract: Vertrag
+  contract_part: Teil des Vertrags
+  cancellation_type: Kündigungsart
+  cancellation_reason: Kündigungsgrund
+  terminate_at: Beenden zum
+  email: E-Mail-Adresse
+  checksum: Prüfsumme
+
+value:
+  ordinary: ordentlich
+  extraordinary: außerordentlich
+  earliest_date: frühestmöglichen Zeitpunkt
+
+form:
+  optional: optional
+  contract_withdrawal: Vertrag (z. B. Bestellnummer)
+  contract_cancellation: Vertrag (z. B. Vertrags- oder Kundennummer)
+  contract_part: Nur ein Teil des Vertrags? Welche Artikel?
+  cancellation_type: Art der Kündigung
+  cancellation_reason: Kündigungsgrund (nur bei außerordentlicher Kündigung)
+  termination_date: 'Kündigen zum (leer: frühestmöglicher Zeitpunkt)'
+  email: E-Mail-Adresse für die Eingangsbestätigung
+
+error:
+  name: Bitte geben Sie Ihren Namen an.
+  contract: Bitte geben Sie an, um welchen Vertrag es geht, z. B. die Bestellnummer.
+  email: Bitte geben Sie eine gültige E-Mail-Adresse für die Eingangsbestätigung an.
+  cancellation_type: Bitte wählen Sie die Art der Kündigung.
+  cancellation_reason: Bitte geben Sie den Grund der außerordentlichen Kündigung an.
+  termination_date: Bitte geben Sie ein gültiges Datum an.
+  too_long: Die Eingabe ist zu lang.
+  not_submitted: Ihre Angaben konnten nicht übermittelt werden. Bitte versuchen Sie es erneut.
+  rate_limited: Von Ihrem Anschluss wurden zuletzt sehr viele Erklärungen abgegeben. Bitte versuchen Sie es später erneut.
+  rate_limited_contact: Von Ihrem Anschluss wurden zuletzt sehr viele Erklärungen abgegeben. Bitte versuchen Sie es später erneut oder schreiben Sie an %recipient%.
+
+receipt:
+  heading: '%label% eingegangen'
+  received_at: Ihre Erklärung ist am %date% eingegangen.
+  mail_failed: Die Eingangsbestätigung konnte gerade nicht per E-Mail versendet werden. Ihre Erklärung ist trotzdem eingegangen. Bitte speichern Sie die Bestätigung.
+  mail_sent: Die Eingangsbestätigung haben wir an %email% gesendet.
+  save: Erklärung mit Datum und Uhrzeit speichern
+  unavailable: Diese Bestätigung ist nicht mehr verfügbar. Sie finden sie in der E-Mail, die wir Ihnen gesendet haben.
+  title: '%label% Nr. %number%'
+  submitted_via: Abgegeben über die Schaltfläche „%button%“ (%basis%).
+
+mail:
+  receipt_subject: 'Eingangsbestätigung: %label% Nr. %number%'
+  operator_subject: 'Neuer Eingang: %label% Nr. %number%'
+  greeting: Guten Tag %name%,
+  confirmation: wir bestätigen den Eingang Ihrer Erklärung (%basis%).
+  disclaimer: Diese Nachricht bestätigt den Eingang Ihrer Erklärung. Sie ist noch keine Aussage darüber, wie wir sie inhaltlich bearbeiten.
+  operator_intro: Über die Website ist eine neue Erklärung eingegangen (%basis%).
+  order_matched: 'Isotope: Bestellung gefunden (ID %id%).'
+  order_email_mismatch: 'Isotope: Bestellung gefunden (ID %id%), die E-Mail-Adresse weicht aber ab.'
+  order_not_found: 'Isotope: Keine passende Bestellung gefunden. Das macht die Erklärung nicht unwirksam, bitte prüfen.'
+
+backend:
+  resent: Die Eingangsbestätigung wurde erneut versendet.
+  resend_failed: Die Eingangsbestätigung konnte nicht versendet werden.
+  no_recipient: 'Widerrufsbutton: Für die Website-Root %root% ist kein Empfänger hinterlegt.'
+  mails_failed: 'Widerrufsbutton: %count% Eingangsbestätigung(en) konnten nicht versendet werden.'

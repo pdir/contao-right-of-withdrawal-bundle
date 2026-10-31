@@ -1,0 +1,77 @@
+# "Withdraw from contract here" and "Confirm withdrawal" are the wording of
+# Art. 11a of Directive 2011/83/EU. The German statutes name only German words.
+withdrawal:
+  entry: Withdraw from contract here
+  confirm: Confirm withdrawal
+  declaration: Withdrawal
+cancellation:
+  entry: Cancel contracts here
+  confirm: Cancel now
+  declaration: Cancellation
+
+label:
+  type: Type
+  number: Number
+  received: Received
+  name: Name
+  contract: Contract
+  contract_part: Part of the contract
+  cancellation_type: Type of cancellation
+  cancellation_reason: Reason for cancellation
+  terminate_at: Terminate on
+  email: E-mail address
+  checksum: Checksum
+
+value:
+  ordinary: ordinary
+  extraordinary: extraordinary
+  earliest_date: the earliest possible date
+
+form:
+  optional: optional
+  contract_withdrawal: Contract (e.g. order number)
+  contract_cancellation: Contract (e.g. contract or customer number)
+  contract_part: Only part of the contract? Which items?
+  cancellation_type: Type of cancellation
+  cancellation_reason: Reason for cancellation (extraordinary cancellation only)
+  termination_date: 'Terminate on (empty: the earliest possible date)'
+  email: E-mail address for the confirmation of receipt
+
+error:
+  name: Please enter your name.
+  contract: Please state which contract this is about, e.g. the order number.
+  email: Please enter a valid e-mail address for the confirmation of receipt.
+  cancellation_type: Please select the type of cancellation.
+  cancellation_reason: Please state the reason for the extraordinary cancellation.
+  termination_date: Please enter a valid date.
+  too_long: The input is too long.
+  not_submitted: Your details could not be submitted. Please try again.
+  rate_limited: A very large number of declarations were recently submitted from your connection. Please try again later.
+  rate_limited_contact: A very large number of declarations were recently submitted from your connection. Please try again later or write to %recipient%.
+
+receipt:
+  heading: '%label% received'
+  received_at: Your declaration was received on %date%.
+  mail_failed: The confirmation of receipt could not be sent by e-mail just now. Your declaration has still been received. Please save the confirmation.
+  mail_sent: We have sent the confirmation of receipt to %email%.
+  save: Save declaration with date and time
+  unavailable: This confirmation is no longer available. You can find it in the e-mail we sent you.
+  title: '%label% no. %number%'
+  submitted_via: Submitted using the button "%button%" (%basis%).
+
+mail:
+  receipt_subject: 'Confirmation of receipt: %label% no. %number%'
+  operator_subject: 'New declaration: %label% no. %number%'
+  greeting: Hello %name%,
+  confirmation: we confirm the receipt of your declaration (%basis%).
+  disclaimer: This message confirms the receipt of your declaration. It is not yet a statement on how we will process it.
+  operator_intro: A new declaration has been received through the website (%basis%).
+  order_matched: 'Isotope: Order found (ID %id%).'
+  order_email_mismatch: 'Isotope: Order found (ID %id%), but the e-mail address differs.'
+  order_not_found: 'Isotope: No matching order found. This does not invalidate the declaration, please check.'
+
+backend:
+  resent: The confirmation of receipt has been sent again.
+  resend_failed: The confirmation of receipt could not be sent.
+  no_recipient: 'Withdrawal button: No recipient is set for website root %root%.'
+  mails_failed: 'Withdrawal button: %count% confirmation(s) of receipt could not be sent.'

@@ -1,0 +1,26 @@
+{% trans_default_domain "pdir_withdrawal" %}
+<!doctype html>
+<html lang="{{ declaration.language|replace({'_': '-'}) }}">
+<head>
+    <meta charset="utf-8">
+    <title>{{ 'receipt.title'|trans({'%label%': declaration.type.declarationLabelKey|trans, '%number%': declaration.sequenceNumber}) }}</title>
+</head>
+<body>
+    <h1>{{ declaration.type.declarationLabelKey|trans }}</h1>
+    <p>{{ 'receipt.submitted_via'|trans({'%button%': declaration.type.confirmLabelKey|trans, '%basis%': declaration.jurisdiction.legalBasis(declaration.type)}) }}</p>
+    <dl>
+        <dt>{{ 'label.number'|trans }}</dt><dd>{{ declaration.sequenceNumber }}</dd>
+        <dt>{{ 'label.received'|trans }}</dt><dd>{{ declaration.receivedAtFormatted }}</dd>
+        <dt>{{ 'label.name'|trans }}</dt><dd>{{ declaration.name }}</dd>
+        <dt>{{ 'label.contract'|trans }}</dt><dd>{{ declaration.contract }}</dd>
+        {% if declaration.contractPart %}<dt>{{ 'label.contract_part'|trans }}</dt><dd>{{ declaration.contractPart }}</dd>{% endif %}
+        {% if declaration.cancellationType %}
+            <dt>{{ 'label.cancellation_type'|trans }}</dt><dd>{{ ('value.' ~ declaration.cancellationType)|trans }}</dd>
+            {% if declaration.cancellationReason %}<dt>{{ 'label.cancellation_reason'|trans }}</dt><dd>{{ declaration.cancellationReason }}</dd>{% endif %}
+            <dt>{{ 'label.terminate_at'|trans }}</dt><dd>{{ declaration.terminationDate ?: 'value.earliest_date'|trans }}</dd>
+        {% endif %}
+        <dt>{{ 'label.email'|trans }}</dt><dd>{{ declaration.email }}</dd>
+    </dl>
+    <p>{{ 'label.checksum'|trans }}: {{ declaration.hash }}</p>
+</body>
+</html>

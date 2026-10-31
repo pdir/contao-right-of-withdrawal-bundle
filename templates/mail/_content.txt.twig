@@ -1,0 +1,19 @@
+{% trans_default_domain "pdir_withdrawal" %}
+{% autoescape false %}
+{{ 'label.type'|trans }}: {{ declaration.type.declarationLabelKey|trans }}
+{{ 'label.number'|trans }}: {{ declaration.sequenceNumber }}
+{{ 'label.received'|trans }}: {{ declaration.receivedAtFormatted }}
+{{ 'label.name'|trans }}: {{ declaration.name }}
+{{ 'label.contract'|trans }}: {{ declaration.contract }}
+{% if declaration.contractPart %}
+{{ 'label.contract_part'|trans }}: {{ declaration.contractPart }}
+{% endif %}
+{% if declaration.cancellationType %}
+{{ 'label.cancellation_type'|trans }}: {{ ('value.' ~ declaration.cancellationType)|trans }}
+{% if declaration.cancellationReason %}
+{{ 'label.cancellation_reason'|trans }}: {{ declaration.cancellationReason }}
+{% endif %}
+{{ 'label.terminate_at'|trans }}: {{ declaration.terminationDate ?: 'value.earliest_date'|trans }}
+{% endif %}
+{{ 'label.email'|trans }}: {{ declaration.email }}
+{% endautoescape %}
