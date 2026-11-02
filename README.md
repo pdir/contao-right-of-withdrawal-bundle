@@ -34,6 +34,45 @@ php vendor/bin/contao-console contao:migrate
 
 Die Kündigungsfunktion ist nur nötig, wenn online Dauerschuldverhältnisse (z. B. Abos) geschlossen werden. Ohne ausgewählte Seite bleibt sie deaktiviert. Für Österreich wird sie nicht angeboten.
 
+### Ohne Contao Manager Bundle
+
+Ohne `contao/manager-bundle` wird das Manager-Plugin nicht ausgeführt. Bundle und Route müssen dann vor `contao:migrate` selbst registriert werden.
+
+Das Bundle in `config/bundles.php` nach dem `ContaoCoreBundle` eintragen:
+
+```php
+return [
+    // ...
+    Contao\CoreBundle\ContaoCoreBundle::class => ['all' => true],
+    Pdir\ContaoRightOfWithdrawalBundle\PdirContaoRightOfWithdrawalBundle::class => ['all' => true],
+];
+```
+
+Die Route für den Download der Erklärung in `config/routes.yaml` importieren:
+
+```yaml
+pdir_withdrawal:
+    resource: '@PdirContaoRightOfWithdrawalBundle/config/routes.yaml'
+```
+
+Außerdem muss der Symfony Mailer konfiguriert sein, sonst kann die Eingangsbestätigung nicht versendet werden:
+
+```yaml
+# config/packages/framework.yaml
+framework:
+    mailer:
+        dsn: '%env(MAILER_DSN)%'
+```
+
+Anschließend den Cache leeren und die Datenbank aktualisieren:
+
+```bash
+php bin/console cache:clear
+php bin/console contao:migrate
+```
+
+Alle weiteren Schritte entsprechen der Einrichtung oben. Bei den Konsolenbefehlen in dieser Anleitung tritt `bin/console` an die Stelle von `vendor/bin/contao-console`.
+
 ### Insert-Tags
 
 - `{{withdrawal_link}}`, `{{cancellation_link}}`: fertiger Link
