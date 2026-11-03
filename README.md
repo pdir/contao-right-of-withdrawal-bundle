@@ -73,6 +73,14 @@ php bin/console contao:migrate
 
 Alle weiteren Schritte entsprechen der Einrichtung oben. Bei den Konsolenbefehlen in dieser Anleitung tritt `bin/console` an die Stelle von `vendor/bin/contao-console`.
 
+Contao speichert die Liste der gefundenen Templates im Cache-Pool `cache.app`. Liegt dieser Pool nicht im Cache-Verzeichnis (z. B. in Redis oder APCu), leert `cache:clear` ihn nicht. Meldet das Backend nach einer Installation oder einem Update „Tried to list template options for the modern fragment type … but could not find any template“, den Pool gezielt leeren:
+
+```bash
+php bin/console cache:pool:clear cache.app
+```
+
+Dabei dieselbe PHP-Version verwenden wie der Webserver.
+
 ### Insert-Tags
 
 - `{{withdrawal_link}}`, `{{cancellation_link}}`: fertiger Link
