@@ -34,6 +34,53 @@ php vendor/bin/contao-console contao:migrate
 
 Die Kündigungsfunktion ist nur nötig, wenn online Dauerschuldverhältnisse (z. B. Abos) geschlossen werden. Ohne ausgewählte Seite bleibt sie deaktiviert. Für Österreich wird sie nicht angeboten.
 
+### Ohne Contao Manager Bundle
+
+Ohne `contao/manager-bundle` wird das Manager-Plugin nicht ausgeführt. Bundle und Route müssen dann vor `contao:migrate` selbst registriert werden.
+
+Das Bundle in `config/bundles.php` nach dem `ContaoCoreBundle` eintragen:
+
+```php
+return [
+    // ...
+    Contao\CoreBundle\ContaoCoreBundle::class => ['all' => true],
+    Pdir\ContaoRightOfWithdrawalBundle\PdirContaoRightOfWithdrawalBundle::class => ['all' => true],
+];
+```
+
+Die Route für den Download der Erklärung in `config/routes.yaml` importieren:
+
+```yaml
+pdir_withdrawal:
+    resource: '@PdirContaoRightOfWithdrawalBundle/config/routes.yaml'
+```
+
+Außerdem muss der Symfony Mailer konfiguriert sein, sonst kann die Eingangsbestätigung nicht versendet werden:
+
+```yaml
+# config/packages/framework.yaml
+framework:
+    mailer:
+        dsn: '%env(MAILER_DSN)%'
+```
+
+Anschließend den Cache leeren und die Datenbank aktualisieren:
+
+```bash
+php bin/console cache:clear
+php bin/console contao:migrate
+```
+
+Alle weiteren Schritte entsprechen der Einrichtung oben. Bei den Konsolenbefehlen in dieser Anleitung tritt `bin/console` an die Stelle von `vendor/bin/contao-console`.
+
+Contao speichert die Liste der gefundenen Templates im Cache-Pool `cache.app`. Liegt dieser Pool nicht im Cache-Verzeichnis (z. B. in Redis oder APCu), leert `cache:clear` ihn nicht. Meldet das Backend nach einer Installation oder einem Update „Tried to list template options for the modern fragment type … but could not find any template“, den Pool gezielt leeren:
+
+```bash
+php bin/console cache:pool:clear cache.app
+```
+
+Dabei dieselbe PHP-Version verwenden wie der Webserver.
+
 ### Insert-Tags
 
 - `{{withdrawal_link}}`, `{{cancellation_link}}`: fertiger Link
